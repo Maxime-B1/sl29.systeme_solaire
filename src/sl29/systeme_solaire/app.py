@@ -1,10 +1,18 @@
 """Un module pour l'application"""
 
 import json
-from flask import Flask, render_template, request
+import os
+from flask import Flask, render_template, request, redirect, url_for
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from wtforms.validators import DataRequired
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
+
 
 
 app = Flask(__name__)
+
 
 # Chargement des données
 with open('data/planets.json', 'r', encoding='utf-8') as f:
@@ -48,16 +56,29 @@ def show_satellite():
     # A FAIRE
 
     # récupérer l'id du sattelite depuis la requete
+    satellite_id = request.args.get('id', type=int)
     # Si l'id n'est pas trouvé, retourner un message d'erreur et un status 404
+    if satellite_id is None:
+        return "Erreur: Le paramètre 'id' est requis. Exemple: /planete?id=3", 404
 
     # Récuperer les données du satellite
+    satellite_data = get_satellite_by_id(satellite_id)
     # Si aucune donnée trouvée, retourner un message d'erreur et un status 404
+    if not satellite_data:
+        return f"Erreur: Aucun satellite trouvé avec l'ID {satellite_id}", 404
+
 
     # récupérer les données de la planète associée.
-
+    planet_satellite = get_planet_by_id(satellites[satellite_id]["planetId"])
+    
     # retourner le template 'satellite.html' avec les variables:
     # - satellite
     # - planet
+
+    return render_template('satellite.html',
+                         satellite=satellite_data,
+                         planet=planet_satellite,
+                         request_args=dict(request.args))
 
 
 def get_planet_by_id(planet_id:int)->dict|None:
@@ -72,6 +93,50 @@ def get_planet_by_id(planet_id:int)->dict|None:
         if planet['id'] == planet_id:
             return planet
     return None  # Si aucune planète trouvée
+
+def get_satellite_by_id(satellite_id:int)->dict|None:
+    """Retourne le satellite sous forme de dictionnaire
+
+    :param satellite_id: l'id deu satellite
+    :type satellite_id: int
+    :return:le satellite ou None
+    :rtype: dict|None
+    """
+    for satellite in satellites:
+        if satellite['id'] == satellite_id:
+            return satellite
+    return None  # Si aucun satellite trouvée
+
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
+
+class PhotoForm(FlaskForm):
+    photo = FileField(validators=[FileRequired()])
+
+@app.route('/planete/upload', methods=['GET', 'POST'])
+def upload():
+    form = PhotoForm()
+
+    planet_id = request.args.get('id', type=int)
+    print(planet_id)
+
+    if form.validate_on_submit():
+        print("ok")
+        f = form.photo.data
+        filename = secure_filename(f.filename)
+        name, extention = filename.split(".")
+        planete_filename = f"planete_{planet_id}.{extention}"
+        print(f"filname = {planete_filename}")
+        new_path = os.path.join('static/img/', planete_filename)
+        print(f"new path = {new_path}")
+        f.save(new_path)
+        return redirect(url_for('index'))
+
+    return render_template('upload.html', form=form)
+
+#def get_image_path (id) :
+ #   if os.path.exists(f"planets_{id}.jpg") :
+
 
 if __name__ == '__main__':
     app.run(debug=True)

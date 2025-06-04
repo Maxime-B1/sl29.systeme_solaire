@@ -1,0 +1,28 @@
+html{
+    background-color:skyblue;
+    padding:50px;
+}
+
+body{
+    background-color:white;
+    border:1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+p{
+    color : red;
+
+}
+
+ul{
+    color : orange
+}
+
+a{
+    color : green
+}
+
+h1{
+    color : pink
+}

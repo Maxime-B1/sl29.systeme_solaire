@@ -2,46 +2,67 @@
 <html>
 <head>
     <title>Système Solaire - Apprentissage des paramètres</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </head>
-<body>
-    <h1>Exploration du Système Solaire</h1>
+<body class="container" style="background-color: skyblue;">
 
-    <h2>Comment utiliser les paramètres:</h2>
-    <p>Les URLs suivantes démontrent comment passer des paramètres:</p>
-    <ul>
-        <li><a href="/planete?id=3">/planete?id=3</a> - Affiche la Terre</li>
-        <li><a href="/satellite?id=1">/satellite?id=1</a> - Affiche la Lune</li>
-    </ul>
+    <div class="row">
+        <li> Choisir une image : <a href="/upload">Cliquer ici</a></li>
+        <div class="col">
+            <h1>Exploration du Système Solaire</h1>
 
-    <h2>Liste des planètes:</h2>
-    <ul>
-        {% for planet in planets %}
-            <li>
-                <a href="/planete?id={{ planet.id }}">
-                    {{ planet.name }} (ID: {{ planet.id }})
-                </a>
-                - Exemple: /planete?id={{ planet.id }}
-            </li>
-        {% endfor %}
-    </ul>
-
-    <div style="margin-top: 2em; padding: 1em; background: #f0f0f0;">
-        <h3>Explications pour les élèves:</h3>
-        <p>Dans l'URL <code>/planete?id=3</code> :</p>
-        <ul>
-            <li><code>id</code> est le nom du paramètre</li>
-            <li><code>3</code> est la valeur du paramètre</li>
-            <li>Dans Flask, on récupère cette valeur avec <code>request.args.get('id')</code></li>
-        </ul>
+            <h2>Comment utiliser les paramètres:</h2>
+            <p>Les URLs suivantes démontrent comment passer des paramètres:</p>
+            <ul>
+                <li><a href="/planete?id=3">/planete?id=3</a> - Affiche la Terre</li>
+                <li><a href="/satellite?id=1">/satellite?id=1</a> - Affiche la Lune</li>
+            </ul>
+        
+            <h2>Liste des planètes:</h2>
+            <ul>
+                {% for planet in planets %}
+                    <li>
+                        <a href="/planete?id={{ planet.id }}">
+                            {{ planet.name }} (ID: {{ planet.id }})
+                        </a>
+                        - Exemple: /planete?id={{ planet.id }}
+                    </li>
+                {% endfor %}
+            </ul>
+        
+            <div style="margin-top: 2em; padding: 1em; background: #f0f0f0;">
+                <h3>Explications pour les élèves:</h3>
+                <p>Dans l'URL <code>/planete?id=3</code> :</p>
+                <ul>
+                    <li><code>id</code> est le nom du paramètre</li>
+                    <li><code>3</code> est la valeur du paramètre</li>
+                    <li>Dans Flask, on récupère cette valeur avec <code>request.args.get('id')</code></li>
+                </ul>
+            </div>
+        
+            <h2>Tester avec un ID:</h2>
+            <form action="/planete" method="get">
+                <label for="planet_id">ID de planète:</label>
+                <input type="number" id="planet_id" name="id" min="1" max="9">
+                <button type="submit">Voir la planète</button>
+            </form>
+            <div class="overflow-y-scroll">« Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit.
+                Ut velit mauris, egestas sed, gravida nec, ornare ut, mi. Aenean ut orci vel massa suscipit pulvinar. Nulla sollicitudin. Fusce varius, ligula non tempus aliquam, nunc turpis ullamcorper nibh, in tempus sapien eros vitae ligula. Pellentesque rhoncus nunc et augue. Integer id felis. Curabitur aliquet pellentesque diam. Integer quis metus vitae elit lobortis egestas. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi vel erat non mauris convallis vehicula. Nulla et sapien. Integer tortor tellus, aliquam faucibus, convallis id, congue eu, quam. Mauris ullamcorper felis vitae erat. Proin feugiat, augue non elementum posuere, metus purus iaculis lectus, et tristique ligula justo vitae magna.
+                
+                Aliquam convallis sollicitudin purus. Praesent aliquam, enim at fermentum mollis, ligula massa adipiscing nisl, ac euismod nibh nisl eu lectus. Fusce vulputate sem at sapien. Vivamus leo. Aliquam euismod libero eu enim. Nulla nec felis sed leo placerat imperdiet. Aenean suscipit nulla in justo. Suspendisse cursus rutrum augue. Nulla tincidunt tincidunt mi. Curabitur iaculis, lorem vel rhoncus faucibus, felis magna fermentum augue, et ultricies lacus lorem varius purus. Curabitur eu amet. »</div>
+    
+        </div>
+        <div class="col">
+        <i class="bi bi-rocket-fill" style="font-size: 30rem;"></i>
+        <img src="static/img/image.webp" class="img-fluid" alt="Image d'une planète">
+        </form>
+        </div>
+     
     </div>
 
-    <h2>Tester avec un ID:</h2>
-    <form action="/planete" method="get">
-        <label for="planet_id">ID de planète:</label>
-        <input type="number" id="planet_id" name="id" min="1" max="9">
-        <button type="submit">Voir la planète</button>
-    </form>
 
-
+  
 </body>
 </html>

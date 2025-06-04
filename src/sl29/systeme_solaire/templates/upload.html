@@ -1,0 +1,7 @@
+<form method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ form.photo.label }} {{ form.photo(size=20) }}
+    <input type="submit" value="Go">
+</form>
+
+<li> Retour à la page d'accueil :  <a href="/">Cliquer ici</a></li>
