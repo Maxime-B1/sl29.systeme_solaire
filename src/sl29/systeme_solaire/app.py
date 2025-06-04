@@ -124,13 +124,16 @@ def upload():
         print("ok")
         f = form.photo.data
         filename = secure_filename(f.filename)
-        name, extention = filename.split(".")
-        planete_filename = f"planete_{planet_id}.{extention}"
+        name, extension = filename.split(".")
+        planete_filename = f"planete_{planet_id}.{extension}"
         print(f"filname = {planete_filename}")
         new_path = os.path.join('static/img/', planete_filename)
         print(f"new path = {new_path}")
         f.save(new_path)
-        return redirect(url_for('index'))
+        print(f"extension = {extension}")
+        planet_id = request.args.get('id', type=int)
+        planet_data = get_planet_by_id(planet_id)
+        return render_template('planet.html', extension = extension, planet = planet_data)
 
     return render_template('upload.html', form=form)
 
