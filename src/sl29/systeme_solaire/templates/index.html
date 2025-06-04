@@ -32,16 +32,6 @@
                 {% endfor %}
             </ul>
         
-            <div style="margin-top: 2em; padding: 1em; background: #f0f0f0;">
-                <h3>Explications pour les élèves:</h3>
-                <p>Dans l'URL <code>/planete?id=3</code> :</p>
-                <ul>
-                    <li><code>id</code> est le nom du paramètre</li>
-                    <li><code>3</code> est la valeur du paramètre</li>
-                    <li>Dans Flask, on récupère cette valeur avec <code>request.args.get('id')</code></li>
-                </ul>
-            </div>
-        
             <h2>Tester avec un ID:</h2>
             <form action="/planete" method="get">
                 <label for="planet_id">ID de planète:</label>

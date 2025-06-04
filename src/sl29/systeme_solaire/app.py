@@ -17,6 +17,7 @@ app = Flask(__name__)
 # Chargement des données
 with open('data/planets.json', 'r', encoding='utf-8') as f:
     planets = json.load(f)
+    print(planets)
 
 with open('data/satellites.json', 'r', encoding='utf-8') as f:
     satellites = json.load(f)
@@ -133,12 +134,19 @@ def upload():
         print(f"extension = {extension}")
         planet_id = request.args.get('id', type=int)
         planet_data = get_planet_by_id(planet_id)
-        return render_template('planet.html', extension = extension, planet = planet_data)
+        if "picture_name" not in planet_data:
+            planet_data["pictureName"]=""
+        planet_data["pictureName"]=planete_filename
+        with open('data/planets.json', 'r', encoding='utf-8') as f:
+            planets = json.load(f)
+            planets[planet_id]=planet_data
+        with open('data/planets.json', 'w', encoding='utf-8') as f:
+            json.dump(planets, f)
+
+        return redirect(f"/planete?id={planet_id}")
 
     return render_template('upload.html', form=form)
 
-#def get_image_path (id) :
- #   if os.path.exists(f"planets_{id}.jpg") :
 
 
 if __name__ == '__main__':
